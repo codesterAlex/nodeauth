@@ -1,9 +1,14 @@
 extends layout
 
 block content
-  h1 Login
-  p Pleaser Login Below
-  form(methods='',action='/user/register',enctype='multipart/form-data')
+  h1 Register
+  p Pleaser Register Below
+  ul.errors
+    if errors
+      each error, i in errors
+        li.alert.alert-danger #{error.msg}
+        
+  form(method='POST',action='/users/register',enctype='multipart/form-data')
     .form-group
       label name
       input.form-control(name="name", type="text", placeholder="Enter Name")
