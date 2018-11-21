@@ -26,41 +26,11 @@ var UserSchema = mongoose.Schema({
 });
 
 
-
-
-
-
-UserSchema.statics.findByCredentials = function(username, password)
-{
-  var user = this;
-  console.log('Enter the statics')
-  return  Users.findOne({username}).then((user) =>{
-    if(!user)
-    {
-      return Promise.reject((new Error('fail')));
-      console.log('user not found');
-    }
-
-    return new Promise((resolve, reject) =>{
-      bcrypt.compare(password, user.password,(err, res)=>{
-        if(res)
-        {
-          resolve(user);
-          console.log('User found and password matched')
-        }
-        else{
-          reject((new Error('fail')));
-          console.log('Password not matched')
-        }
-      })
-    })
-  })
-};
-
+var User = module.exports = mongoose.model('User', UserSchema);
 
 
 module.exports.createUser = (newUser,callback)=>{
-  bcrypt.hash(newUser.password,10,(err, hash)=>{
+  bcrypt.hash(newUser.password,10,(err, hash){
     if(err) throw err;
     //set hashed pw
     newUser.password = hash;
@@ -69,5 +39,3 @@ module.exports.createUser = (newUser,callback)=>{
 
 
 };
-
-var User = module.exports = mongoose.model('User', UserSchema);
